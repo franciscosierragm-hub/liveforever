@@ -687,6 +687,15 @@
   });
   document.addEventListener("visibilitychange", () => { if (document.hidden && cancelJourney) finishJourney(); syncAnimation(); });
   window.addEventListener("resize", resize);
+  // Some sites (LinkedIn) drop the "#" part of shared links, so "?go=projects/ht2000-ia"
+  // works as an alternative and is turned into the usual route.
+  try {
+    const go = new URLSearchParams(location.search).get("go");
+    if (go && !location.hash) {
+      const url = new URL(location.href); url.searchParams.delete("go"); url.hash = "#/" + go.replace(/^[#/]+/, "");
+      history.replaceState(null, "", url.href);
+    }
+  } catch { /* Malformed links fall back to the constellation. */ }
   window.addEventListener("popstate", () => renderRoute());
   window.addEventListener("hashchange", () => renderRoute());
   refreshLabels(); resize(); syncAnimation();
