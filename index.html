@@ -1,0 +1,76 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090b0e">
+  <meta name="description" content="Francisco Sierra — systems engineer and AI research associate. Explore industrial IoT, local AI, cognitive machines and interactive simulation projects.">
+  <title>Francisco Sierra González — Electrical, Electronics & Industrial AI Engineer</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="data/constellation.js" defer></script>
+  <script src="data/landscapes.js" defer></script>
+  <script src="hyperspace.js" defer></script>
+  <script src="ambient.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main class="observatory" aria-label="Francisco Sierra's interactive portfolio">
+    <canvas id="sky" aria-hidden="true"></canvas>
+    <header class="masthead">
+      <a class="identity" href="./" aria-label="Francisco Sierra González, home"><span class="identity-mark" aria-hidden="true">✧</span><span class="identity-copy"><strong>Francisco Sierra González</strong><span>Electrical, Electronics &amp; Industrial AI Engineer</span></span></a>
+      <button class="index-toggle quiet-button" data-open-index aria-haspopup="dialog" aria-controls="site-index">Index <span aria-hidden="true">↗</span></button>
+    </header>
+    <div id="constellation" class="constellation" role="group" aria-label="Portfolio destinations"></div>
+    <footer class="sky-footer">
+      <div class="sky-status">
+        <p id="sky-caption">Engineering · Research · Technology</p>
+        <p id="destination-preview" class="explore-hint" role="status" aria-live="polite">Choose a star to explore <span aria-hidden="true">↗</span></p>
+      </div>
+      <button id="motion-toggle" class="quiet-button" aria-pressed="false"><span id="motion-icon" aria-hidden="true">Ⅱ</span> <span id="motion-label">Pause motion</span></button>
+    </footer>
+    <p id="announcement" class="sr-only" aria-live="polite"></p>
+  </main>
+  <dialog id="detail" aria-labelledby="detail-title">
+    <canvas id="journey" aria-hidden="true"></canvas>
+    <img id="planet-landscape" class="planet-landscape" alt="" decoding="async">
+    <canvas id="ambient" aria-hidden="true"></canvas>
+    <div class="planet-shade" aria-hidden="true"></div>
+    <div class="panel-top"><span id="detail-coordinate"></span><div class="planet-navigation"><button id="skip-journey" class="quiet-button" hidden>Skip journey ↗</button><button id="detail-motion-toggle" class="quiet-button" aria-pressed="false" hidden>Pause ambience</button><button class="index-toggle quiet-button" data-open-index aria-haspopup="dialog" aria-controls="site-index">Index ↗</button><button id="close-detail" class="close-button" aria-label="Back to the constellation" autofocus>×</button></div></div>
+    <div class="gallery-content">
+      <div class="gallery-hero">
+      <header class="gallery-heading">
+        <p id="detail-eyebrow" class="eyebrow"></p>
+        <h1 id="detail-title"></h1>
+        <p id="detail-description" class="panel-description"></p>
+        <div id="profile-actions" class="profile-actions" hidden><a href="assets/documents/francisco-sierra-cv.pdf" download>Download CV <span aria-hidden="true">↓</span></a><a href="mailto:francisco.sierra.gm@gmail.com">Get in touch <span aria-hidden="true">↗</span></a></div>
+      </header>
+      <figure id="profile-photo" class="profile-photo" hidden><img src="assets/francisco-sierra.jpg" alt="Portrait of Francisco Sierra González" width="900" height="900" decoding="async"></figure>
+      </div>
+      <div class="sector-heading"><span>Explore this world</span><span>Choose a story ↓</span></div>
+      <div id="detail-items" class="detail-items" aria-label="Stories and projects"></div>
+      <section id="gallery-selection" class="gallery-selection" aria-live="polite" hidden>
+        <span id="selection-number" class="item-number"></span>
+        <div class="story-content"><nav class="story-navigation" aria-label="Story navigation"><button id="story-back" class="quiet-button">← Back to section</button><a id="story-link" href="#/">Direct link ↗</a></nav><h2 id="selection-title" class="item-title" tabindex="-1"></h2><p id="selection-description" class="item-text"></p><div id="selection-details"></div></div>
+      </section>
+      <footer class="gallery-footer">
+        <button id="return-button" class="return-button"><span aria-hidden="true">←</span> Back to the constellation</button>
+        <p id="detail-note" class="panel-note"></p>
+        <span class="photo-credit"><span id="credit-prefix">Photo: </span><a id="photo-author" target="_blank" rel="noopener noreferrer"></a> · <a id="photo-license" target="_blank" rel="noopener noreferrer"></a></span>
+        <span class="gallery-position" aria-hidden="true">✧ <span id="gallery-index">01</span> / 07</span>
+      </footer>
+    </div>
+    <p id="journey-caption" class="journey-caption" role="status"></p>
+  </dialog>
+  <dialog id="site-index" aria-labelledby="index-title">
+    <header class="index-header"><div><p class="eyebrow">Francisco Sierra</p><h2 id="index-title">Find your way.</h2></div><button id="close-index" class="close-button" aria-label="Close index" autofocus>×</button></header>
+    <p class="index-intro">Go straight to a section, or return to the stars.</p>
+    <nav id="index-destinations" aria-label="Portfolio index"></nav>
+    <div class="index-actions"><a href="assets/documents/francisco-sierra-cv.pdf" download>Download CV · PDF ↓</a><a href="mailto:francisco.sierra.gm@gmail.com">Email Francisco ↗</a></div>
+    <button id="index-home" class="return-button">← Back to the constellation</button>
+  </dialog>
+  <noscript><p class="noscript">Enable JavaScript to explore Fran's portfolio: education, experience, research, toolkit, projects, possible futures and contact.</p></noscript>
+</body>
+</html>
+
