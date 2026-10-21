@@ -92,6 +92,28 @@ window.CONSTELLATION = [
           "download": true
         }
       }
+    ],
+    "stats": [
+      [
+        "10",
+        "projects"
+      ],
+      [
+        "3",
+        "research studies"
+      ],
+      [
+        "2",
+        "video demos"
+      ],
+      [
+        "165",
+        "page thesis"
+      ],
+      [
+        "3",
+        "roles"
+      ]
     ]
   },
   {
@@ -265,7 +287,17 @@ window.CONSTELLATION = [
             "download": true
           }
         ],
-        "actionsFirst": true
+        "actionsFirst": true,
+        "topics": [
+          "Generative AI",
+          "Aerospace",
+          "Industry 5.0"
+        ],
+        "takeaways": [
+          "Question: how can generative AI turn an aircraft test bench into a collaborative Industry 5.0 machine?",
+          "Approach: embodied AI with hybrid RAG, operator memory, Kantian ethics and a safety watchdog outside the model.",
+          "Outcome: a 165-page thesis and a prototype validated in 14 functional tests in simulation."
+        ]
       },
       {
         "id": "aircraft-assembly-line-ai",
@@ -351,7 +383,17 @@ window.CONSTELLATION = [
         "category": "Study · University of Seville",
         "status": "2025",
         "image": "assets/projects/aircraft-assembly-line-ai.jpg",
-        "imageAlt": "Cover of the aircraft final assembly line transformation study."
+        "imageAlt": "Cover of the aircraft final assembly line transformation study.",
+        "topics": [
+          "Industry 5.0",
+          "Aerospace",
+          "Multi-agent"
+        ],
+        "takeaways": [
+          "Question: what must change for an aircraft final assembly line to move from Industry 4.0 to 5.0?",
+          "Approach: a hybrid workforce, a cognitive factory, specialised agents and Gen AI Lean.",
+          "Outcome: a 99-slide conceptual study of AI applications along the whole line."
+        ]
       },
       {
         "id": "aircraft-functional-test-ai",
@@ -442,7 +484,17 @@ window.CONSTELLATION = [
           "Mistral",
           "King Air 360"
         ],
-        "source": "Implementation of Generative AI in the Air Navigation Test Station of a FAL — Industrial Design Engineering Department, University of Seville."
+        "source": "Implementation of Generative AI in the Air Navigation Test Station of a FAL — Industrial Design Engineering Department, University of Seville.",
+        "topics": [
+          "Generative AI",
+          "Aerospace",
+          "Multi-agent"
+        ],
+        "takeaways": [
+          "Question: can an AI assistant help technicians at an air-navigation test station?",
+          "Approach: n8n orchestration, a local Mistral model and a Pinecone RAG over the avionics manuals.",
+          "Outcome: 32 / 36 in a user evaluation and an estimated payback of about 1.3 years."
+        ]
       },
       {
         "id": "cognitive-industrial-systems",
@@ -473,7 +525,16 @@ window.CONSTELLATION = [
           "Self-evolving AI"
         ],
         "category": "Research line",
-        "status": "Industry 5.0"
+        "status": "Industry 5.0",
+        "topics": [
+          "Industry 5.0",
+          "Generative AI"
+        ],
+        "takeaways": [
+          "Idea: machines with cognition, evolution, ethics and ecological awareness.",
+          "Principle: the machine learns the operator’s language — not the other way round.",
+          "Limit: every evolution stays inside human-defined safety limits."
+        ]
       },
       {
         "id": "iot-self-maintenance",
@@ -508,7 +569,16 @@ window.CONSTELLATION = [
           "Vibration analysis"
         ],
         "category": "Research line",
-        "status": "AIoT"
+        "status": "AIoT",
+        "topics": [
+          "IoT",
+          "Industry 5.0"
+        ],
+        "takeaways": [
+          "Idea: from reactive repairs to machines that feel, diagnose and protect themselves.",
+          "Stack: PLC data over S7, vibration, acoustic and oil-particle sensing, and a digital twin.",
+          "Goal: less downtime and less expertise needed to respond to a fault."
+        ]
       },
       {
         "id": "ai-operational-excellence",
@@ -541,7 +611,16 @@ window.CONSTELLATION = [
         ],
         "source": "Operational Excellence Driven by Artificial Intelligence — University of Seville, 2025.",
         "category": "Study · University of Seville",
-        "status": "2025"
+        "status": "2025",
+        "topics": [
+          "Industry 5.0",
+          "Multi-agent"
+        ],
+        "takeaways": [
+          "Idea: bring AI into planning, Lean and Six Sigma on aircraft assembly lines.",
+          "Tools: AI value-stream mapping, AI 5S, predictive Andon and real-time root-cause analysis.",
+          "Scope: proposed applications and research directions, not measured results."
+        ]
       },
       {
         "id": "industry-5-0",
@@ -572,8 +651,34 @@ window.CONSTELLATION = [
           "Industry 5.0"
         ],
         "category": "Objective",
-        "status": "Industry 5.0"
+        "status": "Industry 5.0",
+        "topics": [
+          "Industry 5.0"
+        ],
+        "takeaways": [
+          "Humanisation: technology that augments workers instead of replacing them.",
+          "Resilience: systems that adapt to disruptions without stopping production.",
+          "Ecology: sustainability as an operating criterion, not an afterthought."
+        ]
       }
+    ],
+    "stats": [
+      [
+        "3",
+        "downloadable studies"
+      ],
+      [
+        "165",
+        "page thesis"
+      ],
+      [
+        "99",
+        "slides on the FAL"
+      ],
+      [
+        "32/36",
+        "user evaluation"
+      ]
     ]
   },
   {
@@ -936,8 +1041,20 @@ window.CONSTELLATION = [
             "width": 1280,
             "height": 720,
             "alt": "Video presentation of HT2000-IA: concept, technologies and a walkthrough of the conversational interface and the simulated control panel.",
-            "caption": "Video presentation (3 min 24 s): concept, technologies and the prototype in use — the conversational interface and the simulated HT2000-P20 control panel."
+            "caption": "Video presentation (3 min 24 s): concept, technologies and the prototype in use — the conversational interface and the simulated HT2000-P20 control panel.",
+            "duration": "3:24"
           }
+        ],
+        "topics": [
+          "Generative AI",
+          "Aerospace",
+          "Industry 5.0",
+          "Simulation"
+        ],
+        "takeaways": [
+          "Problem: hydraulic test benches demand experience and give operators raw numbers, not explanations.",
+          "Solution: a local AI that combines conversation, the technical manual and live machine state, with an independent safety watchdog.",
+          "Result: a working simulation validated through 14 functional scenarios — the basis of my bachelor’s thesis."
         ]
       },
       {
@@ -1038,8 +1155,19 @@ window.CONSTELLATION = [
             "width": 1280,
             "height": 720,
             "alt": "Video presentation of the F/A-18C cockpit and the EDI assistant guiding a start-up checklist.",
-            "caption": "Video presentation (9 min 54 s): the interactive 3D cockpit, live checklists and the EDI local AI assistant explaining each step."
+            "caption": "Video presentation (9 min 54 s): the interactive 3D cockpit, live checklists and the EDI local AI assistant explaining each step.",
+            "duration": "9:54"
           }
+        ],
+        "topics": [
+          "Generative AI",
+          "Aerospace",
+          "Simulation"
+        ],
+        "takeaways": [
+          "Problem: checklists say what to do, not why — complex aircraft systems are hard to learn from paper.",
+          "Solution: an interactive 3D cockpit with a simulated aircraft state and EDI, a local AI that reads that state and cites the manuals.",
+          "Result: guided start-up procedures in English and Spanish — an independent, non-certified training prototype."
         ]
       },
       {
@@ -1142,7 +1270,18 @@ window.CONSTELLATION = [
             "caption": "Actual application screenshot: day 1 of a simulated shift at ×20 speed. ROBOT-D1 has requested a drill-bit change, the shared room shows machines reporting to each other, and the right panel lists station progress and the 19 machines."
           }
         ],
-        "source": "LEAN_AI README, app.py, fal/world.py, fal/machines.py, fal/brain/, fal/identity.py, fal/room.py and fal/llm.py; screenshot CAPTURAS/LEAN_IA/Screenshot 2026-10-08 130005.png. Reviewed 8 October 2026."
+        "source": "LEAN_AI README, app.py, fal/world.py, fal/machines.py, fal/brain/, fal/identity.py, fal/room.py and fal/llm.py; screenshot CAPTURAS/LEAN_IA/Screenshot 2026-10-08 130005.png. Reviewed 8 October 2026.",
+        "topics": [
+          "Generative AI",
+          "Multi-agent",
+          "Industry 5.0",
+          "Simulation"
+        ],
+        "takeaways": [
+          "Problem: an assembly line is a black box of dashboards; machines cannot explain themselves.",
+          "Solution: a simulated five-station aircraft line where every robot, crane and cobot perceives, remembers and talks.",
+          "Result: an interactive testbed for cognitive industrial machines and Industry 5.0 ideas."
+        ]
       },
       {
         "id": "king-air-test-assistant",
@@ -1203,7 +1342,17 @@ window.CONSTELLATION = [
           "Answer grounded in documentation",
           "Operator decision"
         ],
-        "source": "Project described in the University of Seville internship section of the updated CV (October 2026)."
+        "source": "Project described in the University of Seville internship section of the updated CV (October 2026).",
+        "topics": [
+          "Generative AI",
+          "Multi-agent",
+          "Aerospace"
+        ],
+        "takeaways": [
+          "Problem: during functional tests, operators lose time searching procedures and technical documentation.",
+          "Solution: a retrieval-augmented, multi-agent assistant grounded in the King Air 360 documentation.",
+          "Result: faster access to the right information while the qualified operator keeps full control."
+        ]
       },
       {
         "id": "aura-think",
@@ -1307,7 +1456,16 @@ window.CONSTELLATION = [
             "caption": "Actual application screenshot: Aura with the illustrated face, the microphone button and the Personality panel, where the name, traits, the System 1 and System 2 models, the vision model and camera-based gaze tracking are configured."
           }
         ],
-        "source": "THINK README, app.py, cerebro/ modules, interfaz/cara.js, interfaz/rostro_real.js and herramientas/generar_rostro.py; screenshot CAPTURAS/THINK/Screenshot 2026-10-08 132202.png. Reviewed 8 October 2026."
+        "source": "THINK README, app.py, cerebro/ modules, interfaz/cara.js, interfaz/rostro_real.js and herramientas/generar_rostro.py; screenshot CAPTURAS/THINK/Screenshot 2026-10-08 132202.png. Reviewed 8 October 2026.",
+        "topics": [
+          "Generative AI",
+          "Human–AI interaction"
+        ],
+        "takeaways": [
+          "Problem: assistants only react to prompts and forget everything between conversations.",
+          "Solution: a fully local AI with senses, memory and a life loop inspired by brain structures.",
+          "Result: an experimental companion that sees, listens, speaks with an animated face and starts conversations."
+        ]
       },
       {
         "id": "live-forever",
@@ -1392,7 +1550,16 @@ window.CONSTELLATION = [
           "Coordinator + agents + hybrid retrieval",
           "Manuals + memory + shared conversation"
         ],
-        "source": "LIFE_FOREVER v01102026/v1 PROYECTO.md and README.md, and the src/life_forever module inventory. Reviewed 8 October 2026."
+        "source": "LIFE_FOREVER v01102026/v1 PROYECTO.md and README.md, and the src/life_forever module inventory. Reviewed 8 October 2026.",
+        "topics": [
+          "Generative AI",
+          "Human–AI interaction"
+        ],
+        "takeaways": [
+          "Problem: appliance manuals get lost, and machines cannot explain themselves to their owners.",
+          "Solution: one AI agent per appliance that knows its manual, remembers and guides through the phone camera.",
+          "Result: a local AI server and Android app — the HT2000-IA idea brought from industry to the home."
+        ]
       },
       {
         "id": "connector-inspection",
@@ -1453,6 +1620,15 @@ window.CONSTELLATION = [
           "YOLO: detect pins",
           "3D point cloud: measure geometry",
           "Compare with XML spec → result"
+        ],
+        "topics": [
+          "Computer vision",
+          "Aerospace"
+        ],
+        "takeaways": [
+          "Problem: checking aircraft wire-harness connectors pin by pin is slow and depends on the inspector.",
+          "Solution: a custom YOLO model detects pins in real time and 3D point clouds check geometry against XML specifications.",
+          "Result: an automated quality-assurance solution for aircraft wire harnesses at CT Engineering."
         ]
       },
       {
@@ -1516,6 +1692,15 @@ window.CONSTELLATION = [
           "OpenThread mesh",
           "Gateway + CLI: discovery + health",
           "MQTT telemetry"
+        ],
+        "topics": [
+          "IoT",
+          "Aerospace"
+        ],
+        "takeaways": [
+          "Problem: environmental data is needed across a large plant where cabling is impractical.",
+          "Solution: a self-organising OpenThread mesh of ESP32 and Nordic nRF nodes with a custom CLI gateway.",
+          "Result: scalable temperature and humidity telemetry over MQTT for an aeronautical plant."
         ]
       },
       {
@@ -1577,6 +1762,15 @@ window.CONSTELLATION = [
           "PLC control + LCD",
           "Power management",
           "LoRa telemetry"
+        ],
+        "topics": [
+          "IoT",
+          "Automation"
+        ],
+        "takeaways": [
+          "Problem: industrial freezers must hold temperature reliably and be monitored without site visits.",
+          "Solution: electrical design, PLC control and power management with long-range LoRa telemetry.",
+          "Result: connected freezer units whose state is visible remotely."
         ]
       },
       {
@@ -1642,8 +1836,36 @@ window.CONSTELLATION = [
           "Orchestrator: onboard + coordinate",
           "Maps, heatmaps + chatbot"
         ],
-        "source": "Project described in the CT Engineering experience section of the updated CV (October 2026)."
+        "source": "Project described in the CT Engineering experience section of the updated CV (October 2026).",
+        "topics": [
+          "IoT",
+          "Multi-agent",
+          "Aerospace"
+        ],
+        "takeaways": [
+          "Problem: hangar sensors from different suppliers produce scattered data in different formats.",
+          "Solution: one IoT platform with interactive maps and heatmaps, and a multi-agent backend that onboards new sensors.",
+          "Result: a single view of an Airbus hangar at ZAL, with a conversational way to query it."
+        ]
       }
+    ],
+    "stats": [
+      [
+        "10",
+        "projects"
+      ],
+      [
+        "2",
+        "video demos"
+      ],
+      [
+        "4",
+        "professional"
+      ],
+      [
+        "6",
+        "personal & research"
+      ]
     ]
   },
   {
@@ -1661,41 +1883,46 @@ window.CONSTELLATION = [
     "title": "Magazine",
     "eyebrow": "Issue 01 · Local AI",
     "description": "Local Knowledge, Real Impact: an illustrated seven-page feature on small, offline AI that works in local languages to bring agriculture, health and education knowledge to rural communities.",
-    "magazine": {
-      "title": "Local Knowledge, Real Impact",
-      "pages": [
-        {
-          "src": "assets/magazine/local-ai-01.jpg",
-          "alt": "Cover: Local Knowledge, Real Impact. Small AI. Real solutions. Stronger communities."
-        },
-        {
-          "src": "assets/magazine/local-ai-02.jpg",
-          "alt": "Page 2: A real need. Many communities have valuable knowledge but limited access to the internet and digital tools."
-        },
-        {
-          "src": "assets/magazine/local-ai-03.jpg",
-          "alt": "Page 3: The idea. A small, rugged computer with artificial intelligence that works offline, adapted to the local context and languages."
-        },
-        {
-          "src": "assets/magazine/local-ai-04.jpg",
-          "alt": "Page 4: How it works. Listen, think and share: speech recognition, a local language model and a library of useful documents."
-        },
-        {
-          "src": "assets/magazine/local-ai-05.jpg",
-          "alt": "Page 5: Real applications in agriculture, health and education, using local knowledge and local languages."
-        },
-        {
-          "src": "assets/magazine/local-ai-06.jpg",
-          "alt": "Page 6: Built with the community. Content created in local languages and designed for real needs."
-        },
-        {
-          "src": "assets/magazine/local-ai-07.jpg",
-          "alt": "Page 7: A brighter future. Stronger communities, more opportunities and a fairer, more inclusive future."
-        }
-      ]
-    },
     "items": [],
-    "group": "personal"
+    "group": "personal",
+    "issues": [
+      {
+        "number": "01",
+        "title": "Local Knowledge, Real Impact",
+        "topic": "Local AI",
+        "date": "October 2026",
+        "pages": [
+          {
+            "src": "assets/magazine/local-ai-01.jpg",
+            "alt": "Cover: Local Knowledge, Real Impact. Small AI. Real solutions. Stronger communities."
+          },
+          {
+            "src": "assets/magazine/local-ai-02.jpg",
+            "alt": "Page 2: A real need. Many communities have valuable knowledge but limited access to the internet and digital tools."
+          },
+          {
+            "src": "assets/magazine/local-ai-03.jpg",
+            "alt": "Page 3: The idea. A small, rugged computer with artificial intelligence that works offline, adapted to the local context and languages."
+          },
+          {
+            "src": "assets/magazine/local-ai-04.jpg",
+            "alt": "Page 4: How it works. Listen, think and share: speech recognition, a local language model and a library of useful documents."
+          },
+          {
+            "src": "assets/magazine/local-ai-05.jpg",
+            "alt": "Page 5: Real applications in agriculture, health and education, using local knowledge and local languages."
+          },
+          {
+            "src": "assets/magazine/local-ai-06.jpg",
+            "alt": "Page 6: Built with the community. Content created in local languages and designed for real needs."
+          },
+          {
+            "src": "assets/magazine/local-ai-07.jpg",
+            "alt": "Page 7: A brighter future. Stronger communities, more opportunities and a fairer, more inclusive future."
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "art",

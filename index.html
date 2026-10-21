@@ -8,12 +8,12 @@
   <meta name="description" content="Francisco Sierra — systems engineer and AI research associate. Explore industrial IoT, local AI, cognitive machines and interactive simulation projects.">
   <title>Francisco Sierra González — Electrical, Electronics & Industrial AI Engineer</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=7bfe9537a5">
-  <script src="data/constellation.js?v=98a4a6b72c" defer></script>
+  <link rel="stylesheet" href="style.css?v=e31d689a04">
+  <script src="data/constellation.js?v=25d3e6c337" defer></script>
   <script src="data/landscapes.js?v=d49fb88dc6" defer></script>
   <script src="hyperspace.js?v=818231220e" defer></script>
   <script src="ambient.js?v=1466067fbf" defer></script>
-  <script src="script.js?v=6f92c37889" defer></script>
+  <script src="script.js?v=6b2c5cd862" defer></script>
 </head>
 <body>
   <main class="observatory" aria-label="Francisco Sierra's interactive portfolio">
@@ -53,14 +53,17 @@
         <h1 id="detail-title"></h1>
         <p id="detail-description" class="panel-description"></p>
         <div id="profile-actions" class="profile-actions" hidden><a href="assets/documents/francisco-sierra-cv.pdf" download>Download CV <span aria-hidden="true">↓</span></a><a href="mailto:francisco.sierra.gm@gmail.com">Get in touch <span aria-hidden="true">↗</span></a></div>
+        <dl id="detail-stats" class="detail-stats" hidden></dl>
       </header>
       <figure id="profile-photo" class="profile-photo" hidden><img src="assets/francisco-sierra.jpg" alt="Portrait of Francisco Sierra González" width="900" height="900" decoding="async"></figure>
       </div>
+      <div id="detail-feature" class="detail-feature"></div>
       <div class="sector-heading"><span>Explore this world</span><span>Choose a story ↓</span></div>
+      <div id="detail-filters" class="detail-filters" role="group" aria-label="Filter by topic" hidden></div>
       <div id="detail-items" class="detail-items" aria-label="Stories and projects"></div>
       <section id="gallery-selection" class="gallery-selection" aria-live="polite" hidden>
         <span id="selection-number" class="item-number"></span>
-        <div class="story-content"><nav class="story-navigation" aria-label="Story navigation"><button id="story-back" class="quiet-button">← Back to section</button><a id="story-link" href="#/">Direct link ↗</a></nav><h2 id="selection-title" class="item-title" tabindex="-1"></h2><p id="selection-description" class="item-text"></p><div id="selection-details"></div></div>
+        <div class="story-content"><nav class="story-navigation" aria-label="Story navigation"><button id="story-back" class="quiet-button">← Back to section</button><a id="story-link" href="#/">Direct link ↗</a></nav><p id="selection-meta" class="story-meta"></p><h2 id="selection-title" class="item-title" tabindex="-1"></h2><p id="selection-description" class="item-text"></p><div id="selection-details"></div></div>
       </section>
       <footer class="gallery-footer">
         <button id="return-button" class="return-button"><span aria-hidden="true">←</span> Back to the constellation</button>

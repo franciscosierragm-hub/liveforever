@@ -279,7 +279,7 @@
   }
   function previewText(node) {
     const unit = {projects:" projects", about:" roles", university:" areas", art:" works"}[node.id] || " stories";
-    return node.name + " · " + (node.magazine ? node.magazine.pages.length + " pages" : node.items.length + unit);
+    return node.name + " · " + (node.issues ? node.issues.length + (node.issues.length === 1 ? " issue" : " issues") : node.items.length + unit);
   }
   function setHover(id) {
     hovered = id;
@@ -437,6 +437,13 @@
       }
       figure.append(picture, caption); details.append(figure);
     });
+    if (item.takeaways) {
+      const box = element("aside", "story-takeaways");
+      box.append(element("h3", "", "Key takeaways"));
+      const list = element("ul", "");
+      item.takeaways.forEach(point => list.append(element("li", "", point)));
+      box.append(list); details.append(box);
+    }
     if (item.table) details.append(educationTable(item.table));
     if (item.facts) {
       const facts = element("dl", "story-facts");
@@ -470,12 +477,130 @@
       });
       if (item.actionsFirst) details.prepend(row); else details.append(row);
     }
+    if (item.topics && activeNode) {
+      const topics = element("div", "story-topics"); topics.setAttribute("aria-label", "Topics");
+      item.topics.forEach(topic => {
+        const chip = element("button", "topic-chip", "#" + topic);
+        chip.addEventListener("click", () => {
+          const node = activeNode; navigateTo(node);
+          setTimeout(() => { applyTopic(topic); document.querySelector("#detail-filters").scrollIntoView({ behavior: "smooth", block: "center" }); }, 0);
+        });
+        topics.append(chip);
+      });
+      details.append(topics);
+    }
+    const related = item.topics ? relatedItems(item) : [];
+    if (related.length) {
+      const section = element("section", "story-related");
+      section.append(element("h3", "", "Related"));
+      const grid = element("div", "related-grid");
+      related.forEach(({ node, other, index }) => {
+        const card = element("a", "related-card"); card.href = routeHash(node, index);
+        if (other.image) { const img = element("img", ""); img.src = other.image; img.alt = ""; img.decoding = "async"; card.append(img); }
+        card.append(element("span", "related-kind", node.name + (itemVideo(other) ? " · Video" : "")), element("strong", "", other.title));
+        grid.append(card);
+      });
+      section.append(grid); details.append(section);
+    }
+  }
+  // Editorial touches: key figures, a video strip, topic filters and related reading.
+  const editorialNodes = () => nodes.filter(node => ["projects", "research"].includes(node.id));
+  let activeTopic = null;
+  function readingTime(item) {
+    const words = [item.summary, ...(item.blocks || []).map(block => block.title + " " + block.text)].join(" ").split(/\s+/).length;
+    return Math.max(1, Math.round(words / 200));
+  }
+  function itemVideo(item) { return (item.gallery || []).find(entry => entry.video); }
+  function applyTopic(topic) {
+    activeTopic = topic;
+    const bar = document.querySelector("#detail-filters");
+    bar.querySelectorAll("button").forEach(button => button.setAttribute("aria-pressed", String((button.dataset.topic || null) === topic)));
+    let shown = 0;
+    document.querySelectorAll("#detail-items .detail-item").forEach(card => {
+      const visible = !topic || (card.dataset.topics || "").split("|").includes(topic);
+      card.hidden = !visible; if (visible) shown++;
+    });
+    const count = bar.querySelector(".filter-count");
+    if (count) count.textContent = shown + " shown";
+  }
+  function renderEditorial(node) {
+    const stats = document.querySelector("#detail-stats");
+    stats.replaceChildren(); stats.hidden = !node.stats;
+    (node.stats || []).forEach(([value, label]) => {
+      const pair = document.createElement("div");
+      const dt = document.createElement("dt"); dt.textContent = value;
+      const dd = document.createElement("dd"); dd.textContent = label;
+      pair.append(dt, dd); stats.append(pair);
+    });
+    const feature = document.querySelector("#detail-feature"); feature.replaceChildren();
+    const videos = node.items.map((item, index) => [item, index]).filter(([item]) => itemVideo(item));
+    if (videos.length) {
+      const strip = document.createElement("section"); strip.className = "video-strip";
+      const label = document.createElement("p"); label.className = "video-strip-label"; label.textContent = "Videos";
+      const row = document.createElement("div"); row.className = "video-strip-row";
+      videos.forEach(([item, index]) => {
+        const card = document.createElement("a"); card.className = "video-card"; card.href = routeHash(node, index);
+        const thumb = document.createElement("span"); thumb.className = "video-thumb";
+        const img = document.createElement("img"); img.src = item.image; img.alt = ""; img.decoding = "async";
+        const play = document.createElement("span"); play.className = "video-play"; play.textContent = "▶";
+        const time = document.createElement("span"); time.className = "video-duration"; time.textContent = itemVideo(item).duration || "";
+        thumb.append(img, play, time);
+        const title = document.createElement("strong"); title.textContent = item.title;
+        const meta = document.createElement("span"); meta.textContent = item.category || "";
+        card.append(thumb, title, meta); row.append(card);
+      });
+      strip.append(label, row); feature.append(strip);
+    }
+    const bar = document.querySelector("#detail-filters"); bar.replaceChildren();
+    const topics = [...new Set(node.items.flatMap(item => item.topics || []))];
+    bar.hidden = topics.length < 2;
+    activeTopic = null;
+    if (topics.length < 2) return;
+    [null, ...topics].forEach(topic => {
+      const chip = document.createElement("button"); chip.className = "topic-chip";
+      if (topic) chip.dataset.topic = topic;
+      chip.textContent = topic ? "#" + topic : "All";
+      chip.addEventListener("click", () => applyTopic(topic));
+      bar.append(chip);
+    });
+    const count = document.createElement("span"); count.className = "filter-count"; bar.append(count);
+  }
+  function relatedItems(item) {
+    const mine = item.topics || [];
+    return editorialNodes().flatMap(node => node.items.map((other, index) => ({ node, other, index })))
+      .filter(({ other }) => other !== item)
+      .map(entry => ({ ...entry, score: (entry.other.topics || []).filter(topic => mine.includes(topic)).length + (entry.other.image ? .3 : 0) }))
+      .filter(entry => entry.score >= 1)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3);
   }
   // Magazine: a book whose leaves turn in 3D. Two pages per spread on wide screens, one on phones.
-  function renderMagazine(node) {
-    const pages = node.magazine.pages;
+  function renderKiosk(node) {
+    const kiosk = document.createElement("section"); kiosk.className = "kiosk";
+    const shelf = document.createElement("div"); shelf.className = "kiosk-shelf"; shelf.setAttribute("role", "list");
+    const reader = document.createElement("div"); reader.className = "kiosk-reader";
+    const open = index => {
+      shelf.querySelectorAll(".issue-cover").forEach((cover, i) => cover.setAttribute("aria-pressed", String(i === index)));
+      reader.replaceChildren(renderMagazine(node, node.issues[index]));
+    };
+    node.issues.forEach((issue, index) => {
+      const cover = document.createElement("button"); cover.className = "issue-cover"; cover.setAttribute("role", "listitem");
+      const img = document.createElement("img"); img.src = issue.pages[0].src; img.alt = ""; img.decoding = "async";
+      const meta = document.createElement("span"); meta.className = "issue-meta"; meta.textContent = "Issue " + issue.number + " · " + issue.date;
+      const title = document.createElement("strong"); title.textContent = issue.title;
+      const topic = document.createElement("span"); topic.className = "issue-topic"; topic.textContent = "#" + issue.topic + " · " + issue.pages.length + " pages";
+      cover.append(img, meta, title, topic);
+      cover.addEventListener("click", () => { open(index); reader.scrollIntoView({ behavior: reducedMotion.matches ? "instant" : "smooth", block: "start" }); });
+      shelf.append(cover);
+    });
+    kiosk.append(shelf, reader);
+    open(0);
+    return kiosk;
+  }
+  function renderMagazine(node, issue) {
+    const pages = issue.pages;
     const wrap = document.createElement("section"); wrap.className = "magazine";
-    wrap.setAttribute("aria-label", node.magazine.title + " — magazine, " + pages.length + " pages");
+    wrap.setAttribute("aria-label", issue.title + " — issue " + issue.number + ", " + pages.length + " pages");
     const book = document.createElement("div"); book.className = "book";
     const stage = document.createElement("div"); stage.className = "book-stage"; stage.append(book);
     const status = document.createElement("p"); status.className = "book-status"; status.setAttribute("aria-live", "polite");
@@ -551,7 +676,7 @@
     const onResize = () => { const now = innerWidth < 760; if (now !== lastSingle) { lastSingle = now; build(); } };
     addEventListener("resize", onResize);
     new MutationObserver((_, observer) => { if (!wrap.isConnected) { removeEventListener("resize", onResize); observer.disconnect(); } })
-      .observe(document.querySelector("#detail-items"), { childList: true });
+      .observe(document.querySelector("#detail-items"), { childList: true, subtree: true });
     onResize();
     return wrap;
   }
@@ -589,6 +714,8 @@
     const item = activeNode.items[index];
     document.querySelector("#selection-number").textContent = String(index + 1).padStart(2, "0");
     document.querySelector("#selection-title").textContent = item.title;
+    const editorial = ["projects", "research"].includes(activeNode.id);
+    document.querySelector("#selection-meta").textContent = editorial ? [item.category, item.status, readingTime(item) + " min read"].filter(Boolean).join(" · ") : "";
     document.querySelector("#selection-description").textContent = item.summary;
     document.querySelector("#story-back").textContent = "← Back to " + activeNode.name.toLowerCase();
     document.querySelector("#story-link").href = routeHash(activeNode, index);
@@ -640,15 +767,16 @@
     items.replaceChildren();
     const entries = node.items;
     items.dataset.count = entries.length;
-    items.dataset.layout = node.magazine ? "magazine" : {projects:"projects", research:"projects", art:"projects", about:"timeline", knowledge:"toolkit", university:"education"}[node.id] || "stories";
-    const sectionLabels = {projects:[`${entries.length} projects & prototypes`, "Open a case study ↓"], about:["Professional experience", "Open each role ↓"], knowledge:["Tools in practice", "Follow the work ↗"], university:["Degrees & training", "By discipline"], research:["Research lines", "Choose a topic ↓"], future:["Possible futures", "Choose a signal ↓"], contact:["About me & contact", "Choose a story ↓"], art:["Latest works", "Open a piece ↓"], magazine:[node.magazine ? node.magazine.title : "", "Turn the pages →"]};
+    items.dataset.layout = node.issues ? "magazine" : {projects:"projects", research:"projects", art:"projects", about:"timeline", knowledge:"toolkit", university:"education"}[node.id] || "stories";
+    const sectionLabels = {projects:[`${entries.length} projects & prototypes`, "Open a case study ↓"], about:["Professional experience", "Open each role ↓"], knowledge:["Tools in practice", "Follow the work ↗"], university:["Degrees & training", "By discipline"], research:["Research lines", "Choose a topic ↓"], future:["Possible futures", "Choose a signal ↓"], contact:["About me & contact", "Choose a story ↓"], art:["Latest works", "Open a piece ↓"], magazine:["Issues", "Choose an issue, then turn the pages →"]};
     const labels = sectionLabels[node.id] || ["Explore this world", "Choose a story ↓"];
     document.querySelector(".sector-heading").firstElementChild.textContent=labels[0];
     document.querySelector(".sector-heading").lastElementChild.textContent=labels[1];
     document.querySelector("#gallery-selection").hidden = true;
     document.querySelector("#gallery-index").textContent = String(nodes.indexOf(node) + 1).padStart(2, "0");
     document.querySelector("#gallery-total").textContent = String(nodes.length).padStart(2, "0");
-    if (node.magazine) items.append(renderMagazine(node));
+    if (node.issues) items.append(renderKiosk(node));
+    renderEditorial(node);
     entries.forEach((item, index) => {
       const {title, summary: description} = item;
       const row = document.createElement("button"); row.className = "detail-item";
@@ -682,6 +810,13 @@
       }
       if (["projects","research","art","about","knowledge"].includes(node.id)) {
         const summary=document.createElement("span");summary.className="card-summary";summary.textContent=description;row.append(summary);
+      }
+      if (item.topics) {
+        row.dataset.topics = item.topics.join("|");
+        const tags=document.createElement("span");tags.className="card-topics";
+        item.topics.forEach(topic=>{const tag=document.createElement("span");tag.textContent="#"+topic;tags.append(tag);});
+        if (itemVideo(item)) { const v=document.createElement("span");v.className="card-video";v.textContent="▶ Video "+(itemVideo(item).duration||"");tags.prepend(v); }
+        row.append(tags);
       }
       if (node.id === "knowledge") {
         const group=document.createElement("article");group.className="tool-group";
