@@ -18,12 +18,22 @@
   const worlds = window.LANDSCAPES;
   const landscape = document.querySelector("#planet-landscape");
   const loadedLandscapes = new Map();
-  function preloadLandscape(node) {
-    if (!loadedLandscapes.has(node.id)) {
-      const image = new Image();
-      image.src = worlds[node.id].image;
-      loadedLandscapes.set(node.id, image);
+  // Destinations share a quiet starfield instead of landscape photographs.
+  let backdropUrl = null;
+  function starBackdrop() {
+    if (backdropUrl) return backdropUrl;
+    const w = 1920, h = 1200, sky = document.createElement("canvas");
+    sky.width = w; sky.height = h;
+    const g = sky.getContext("2d"), rand = randomFactory(4242);
+    g.fillStyle = "#070a10"; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 40; i++) glow(g, rand() * w, rand() * h, 120 + rand() * 360, [70, 86, 120], .05);
+    for (let i = 0; i < 2600; i++) {
+      const size = .3 + Math.pow(rand(), 6) * 1.6;
+      g.fillStyle = rgba(i % 4 === 0 ? [190, 205, 235] : [225, 218, 205], .15 + rand() * .55);
+      g.beginPath(); g.arc(rand() * w, rand() * h, size, 0, Math.PI * 2); g.fill();
     }
+    backdropUrl = sky.toDataURL("image/jpeg", .86);
+    return backdropUrl;
   }
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
   const motionButton = document.querySelector("#motion-toggle");
@@ -35,8 +45,9 @@
   const pointer = { x: 0, y: 0, targetX: 0, targetY: 0 };
   const buttons = new Map();
   const mobilePositions = {
-    contact: [404, 235], about: [195, 75], research: [595, 105],
-    university: [150, 330], knowledge: [655, 345], projects: [300, 520], future: [645, 530]
+    contact: [404, 230], about: [200, 60], research: [610, 70],
+    university: [95, 265], knowledge: [712, 270], magazine: [130, 455], art: [700, 415],
+    projects: [380, 540], future: [665, 535]
   };
   const centerNode = nodes.find(node => node.id === "contact");
   const galaxyNode = nodes.find(node => node.kind === "galaxy");
@@ -252,8 +263,8 @@
     else draw();
   }
   function previewText(node) {
-    const unit = {projects:" projects", about:" roles", university:" areas"}[node.id] || " stories";
-    return node.name + " · " + node.items.length + unit;
+    const unit = {projects:" projects", about:" roles", university:" areas", art:" works"}[node.id] || " stories";
+    return node.name + " · " + (node.magazine ? node.magazine.pages.length + " pages" : node.items.length + unit);
   }
   function setHover(id) {
     hovered = id;
@@ -298,7 +309,7 @@
   function showClickHint() {
     clearClickHint();
     if (!activeNode || activeItemIndex !== null || hintsDone.has(activeNode.id)) return;
-    const card = document.querySelector("#detail-items .detail-item");
+    const card = document.querySelector("#detail-items .detail-item, #detail-items .book-hint-target");
     if (!card) return;
     const hint = document.createElement("span"); hint.className = "click-hint"; hint.setAttribute("aria-hidden", "true");
     if (reducedMotion.matches) hint.classList.add("still");
@@ -310,7 +321,7 @@
   }
   function startJourney(node, direct = false) {
     dialog.classList.remove("arrived", "arriving");
-    if (direct || reducedMotion.matches || paused) { finishJourney(); return; }
+    if (direct || node.kind !== "galaxy" || reducedMotion.matches || paused) { finishJourney(); return; }
     dialog.classList.add("travelling");
     document.querySelector(".gallery-content").inert = true;
     document.querySelector("#skip-journey").hidden = false;
@@ -445,6 +456,90 @@
       if (item.actionsFirst) details.prepend(row); else details.append(row);
     }
   }
+  // Magazine: a book whose leaves turn in 3D. Two pages per spread on wide screens, one on phones.
+  function renderMagazine(node) {
+    const pages = node.magazine.pages;
+    const wrap = document.createElement("section"); wrap.className = "magazine";
+    wrap.setAttribute("aria-label", node.magazine.title + " — magazine, " + pages.length + " pages");
+    const book = document.createElement("div"); book.className = "book";
+    const stage = document.createElement("div"); stage.className = "book-stage"; stage.append(book);
+    const status = document.createElement("p"); status.className = "book-status"; status.setAttribute("aria-live", "polite");
+    const prev = document.createElement("button"); prev.className = "book-turn"; prev.textContent = "← Previous";
+    const next = document.createElement("button"); next.className = "book-turn"; next.textContent = "Next page →";
+    const controls = document.createElement("div"); controls.className = "book-controls"; controls.append(prev, status, next);
+    wrap.append(stage, controls);
+    let single = false, leaves = [], current = 0;
+    const face = (page, side) => {
+      const el = document.createElement("div"); el.className = "leaf-face " + side;
+      if (page) { const img = document.createElement("img"); img.src = page.src; img.alt = page.alt; img.decoding = "async"; img.draggable = false; el.append(img); }
+      else el.classList.add("blank");
+      return el;
+    };
+    const last = () => leaves.length - (single ? 1 : 0);
+    function build() {
+      single = innerWidth < 760;
+      book.classList.toggle("single", single);
+      book.replaceChildren();
+      const sheets = [];
+      if (single) pages.forEach(page => sheets.push([page, null]));
+      else for (let i = 0; i < pages.length; i += 2) sheets.push([pages[i], pages[i + 1] || null]);
+      leaves = sheets.map(([front, back]) => {
+        const leaf = document.createElement("div"); leaf.className = "leaf";
+        leaf.append(face(front, "front"), face(back, "back"));
+        leaf.addEventListener("click", () => { if (!swiped) turn(leaf.classList.contains("turned") ? -1 : 1); });
+        book.append(leaf);
+        return leaf;
+      });
+      book.classList.add("book-hint-target");
+      current = Math.min(current, last());
+      update(true);
+    }
+    function update(instant) {
+      leaves.forEach((leaf, i) => {
+        const turned = i < current;
+        leaf.classList.toggle("turned", turned);
+        leaf.classList.toggle("instant", Boolean(instant));
+        if (instant || !leaf.classList.contains("moving")) leaf.style.zIndex = turned ? i + 1 : leaves.length - i;
+      });
+      book.classList.toggle("closed", !single && current === 0);
+      book.classList.toggle("finished", !single && current === leaves.length);
+      prev.disabled = current === 0; next.disabled = current >= last();
+      if (single) status.textContent = "Page " + (current + 1) + " / " + pages.length;
+      else {
+        const left = current * 2, right = left + 1;
+        status.textContent = current === 0 ? "Cover" : left > pages.length ? "Back cover" : "Pages " + left + (right <= pages.length ? "–" + right : "") + " / " + pages.length;
+      }
+    }
+    function turn(step) {
+      const target = current + step;
+      if (target < 0 || target > last()) return;
+      const leaf = leaves[step > 0 ? current : target];
+      leaf.classList.add("moving"); leaf.style.zIndex = leaves.length + 2;
+      setTimeout(() => { leaf.classList.remove("moving"); update(true); }, 900);
+      current = target; markHintDone(node.id);
+      update(false);
+    }
+    prev.addEventListener("click", () => turn(-1));
+    next.addEventListener("click", () => turn(1));
+    let startX = null, swiped = false;
+    book.addEventListener("pointerdown", event => { startX = event.clientX; swiped = false; });
+    book.addEventListener("pointerup", event => {
+      if (startX !== null && Math.abs(event.clientX - startX) > 40) { swiped = true; turn(event.clientX < startX ? 1 : -1); }
+      startX = null;
+    });
+    wrap.tabIndex = 0;
+    wrap.addEventListener("keydown", event => {
+      if (event.key === "ArrowRight") { turn(1); event.preventDefault(); }
+      if (event.key === "ArrowLeft") { turn(-1); event.preventDefault(); }
+    });
+    let lastSingle = null;
+    const onResize = () => { const now = innerWidth < 760; if (now !== lastSingle) { lastSingle = now; build(); } };
+    addEventListener("resize", onResize);
+    new MutationObserver((_, observer) => { if (!wrap.isConnected) { removeEventListener("resize", onResize); observer.disconnect(); } })
+      .observe(document.querySelector("#detail-items"), { childList: true });
+    onResize();
+    return wrap;
+  }
   function storyId(item) {
     return item.id || item.title.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   }
@@ -518,16 +613,7 @@
     dialog.dataset.world = node.id;
     document.querySelector("#profile-actions").hidden = node.id !== "contact";
     document.querySelector("#profile-photo").hidden = node.id !== "contact";
-    landscape.src = world.image;
-    landscape.style.setProperty("--landscape-position", world.position);
-    landscape.style.setProperty("--landscape-mobile-position", world.mobilePosition || world.position);
-    const author = document.querySelector("#photo-author");
-    document.querySelector("#credit-prefix").textContent = "Photo: ";
-    author.textContent = world.author;
-    author.href = world.source;
-    const license = document.querySelector("#photo-license");
-    license.textContent = world.license;
-    license.href = world.licenseUrl || world.source;
+    landscape.src = starBackdrop();
     const destinationColor = world.accent || node.color;
     dialog.style.setProperty("--detail-color", rgba(destinationColor, 1));
     dialog.style.setProperty("--gallery-tint", rgba(destinationColor, .12));
@@ -539,13 +625,15 @@
     items.replaceChildren();
     const entries = node.items;
     items.dataset.count = entries.length;
-    items.dataset.layout = {projects:"projects", research:"projects", about:"timeline", knowledge:"toolkit", university:"education"}[node.id] || "stories";
-    const sectionLabels = {projects:[`${entries.length} projects & prototypes`, "Open a case study ↓"], about:["Professional experience", "Open each role ↓"], knowledge:["Tools in practice", "Follow the work ↗"], university:["Degrees & training", "By discipline"], research:["Research lines", "Choose a topic ↓"], future:["Possible futures", "Choose a signal ↓"], contact:["About me & contact", "Choose a story ↓"]};
+    items.dataset.layout = node.magazine ? "magazine" : {projects:"projects", research:"projects", art:"projects", about:"timeline", knowledge:"toolkit", university:"education"}[node.id] || "stories";
+    const sectionLabels = {projects:[`${entries.length} projects & prototypes`, "Open a case study ↓"], about:["Professional experience", "Open each role ↓"], knowledge:["Tools in practice", "Follow the work ↗"], university:["Degrees & training", "By discipline"], research:["Research lines", "Choose a topic ↓"], future:["Possible futures", "Choose a signal ↓"], contact:["About me & contact", "Choose a story ↓"], art:["Latest works", "Open a piece ↓"], magazine:[node.magazine ? node.magazine.title : "", "Turn the pages →"]};
     const labels = sectionLabels[node.id] || ["Explore this world", "Choose a story ↓"];
     document.querySelector(".sector-heading").firstElementChild.textContent=labels[0];
     document.querySelector(".sector-heading").lastElementChild.textContent=labels[1];
     document.querySelector("#gallery-selection").hidden = true;
     document.querySelector("#gallery-index").textContent = String(nodes.indexOf(node) + 1).padStart(2, "0");
+    document.querySelector("#gallery-total").textContent = String(nodes.length).padStart(2, "0");
+    if (node.magazine) items.append(renderMagazine(node));
     entries.forEach((item, index) => {
       const {title, summary: description} = item;
       const row = document.createElement("button"); row.className = "detail-item";
@@ -556,11 +644,11 @@
       const heading = document.createElement("span"); heading.className = "item-title"; heading.textContent = title;
       const text = document.createElement("span"); text.className = "gallery-card-action"; text.textContent = "Explore ↗";
       body.append(number, heading, text);
-      if (item.image && ["projects","research"].includes(node.id)) {
+      if (item.image && ["projects","research","art"].includes(node.id)) {
         const picture=document.createElement("img"); picture.src=item.image;picture.alt="";picture.width=800;picture.height=420;picture.className="project-thumbnail";
         row.append(picture);
       }
-      if (["projects","research"].includes(node.id) && item.category) {
+      if (["projects","research","art"].includes(node.id) && item.category) {
         const context = document.createElement("span");
         context.className = "project-context";
         context.textContent = [item.category, item.status].filter(Boolean).join(" · ");
@@ -577,7 +665,7 @@
         items.append(group);
         return;
       }
-      if (["projects","research","about","knowledge"].includes(node.id)) {
+      if (["projects","research","art","about","knowledge"].includes(node.id)) {
         const summary=document.createElement("span");summary.className="card-summary";summary.textContent=description;row.append(summary);
       }
       if (node.id === "knowledge") {
@@ -614,9 +702,9 @@
     button.className = node.kind === "galaxy" ? "star-button galaxy-button" : "star-button"; button.dataset.id = node.id;
     button.style.setProperty("--star-color", rgba(node.color, 1));
     button.innerHTML = '<span class="star-label"><span class="star-name"></span><span class="star-subtitle"></span></span>';
-    button.addEventListener("pointerenter", () => { setHover(node.id); preloadLandscape(node); });
+    button.addEventListener("pointerenter", () => setHover(node.id));
     button.addEventListener("pointerleave", () => { if(document.activeElement!==button)setHover(null); });
-    button.addEventListener("focus", () => { setHover(node.id); preloadLandscape(node); });
+    button.addEventListener("focus", () => setHover(node.id));
     button.addEventListener("blur", () => setHover(null));
     button.addEventListener("click", () => navigateTo(node, { direct: false }));
     container.append(button); buttons.set(node.id, button);

@@ -1647,9 +1647,134 @@ window.CONSTELLATION = [
     ]
   },
   {
+    "id": "magazine",
+    "x": 172,
+    "y": 448,
+    "color": [
+      255,
+      214,
+      170
+    ],
+    "size": 0.86,
+    "name": "Magazine",
+    "subtitle": "Stories in print",
+    "title": "Magazine",
+    "eyebrow": "Issue 01 · Local AI",
+    "description": "Local Knowledge, Real Impact: an illustrated seven-page feature on small, offline AI that works in local languages to bring agriculture, health and education knowledge to rural communities.",
+    "magazine": {
+      "title": "Local Knowledge, Real Impact",
+      "pages": [
+        {
+          "src": "assets/magazine/local-ai-01.jpg",
+          "alt": "Cover: Local Knowledge, Real Impact. Small AI. Real solutions. Stronger communities."
+        },
+        {
+          "src": "assets/magazine/local-ai-02.jpg",
+          "alt": "Page 2: A real need. Many communities have valuable knowledge but limited access to the internet and digital tools."
+        },
+        {
+          "src": "assets/magazine/local-ai-03.jpg",
+          "alt": "Page 3: The idea. A small, rugged computer with artificial intelligence that works offline, adapted to the local context and languages."
+        },
+        {
+          "src": "assets/magazine/local-ai-04.jpg",
+          "alt": "Page 4: How it works. Listen, think and share: speech recognition, a local language model and a library of useful documents."
+        },
+        {
+          "src": "assets/magazine/local-ai-05.jpg",
+          "alt": "Page 5: Real applications in agriculture, health and education, using local knowledge and local languages."
+        },
+        {
+          "src": "assets/magazine/local-ai-06.jpg",
+          "alt": "Page 6: Built with the community. Content created in local languages and designed for real needs."
+        },
+        {
+          "src": "assets/magazine/local-ai-07.jpg",
+          "alt": "Page 7: A brighter future. Stronger communities, more opportunities and a fairer, more inclusive future."
+        }
+      ]
+    },
+    "items": []
+  },
+  {
+    "id": "art",
+    "x": 585,
+    "y": 468,
+    "color": [
+      255,
+      170,
+      170
+    ],
+    "size": 0.86,
+    "name": "Art",
+    "subtitle": "Images and ideas",
+    "title": "Art",
+    "eyebrow": "Digital artwork",
+    "description": "A personal series of digital images about memory, time and the people we leave behind.",
+    "items": [
+      {
+        "id": "park-and-ant-hill",
+        "title": "Impressionist Park Moment with Ant Hill",
+        "summary": "A child kicks an ant hill in a sunlit park while an old man in a wheelchair watches.",
+        "category": "Digital artwork",
+        "status": "2026",
+        "image": "assets/art/impressionist-park-moment-with-ant-hill.jpg",
+        "imageAlt": "Impressionist painting of a boy kicking an ant hill in a park, watched by an old man in a wheelchair.",
+        "gallery": [
+          {
+            "src": "assets/art/impressionist-park-moment-with-ant-hill.jpg",
+            "width": 1536,
+            "height": 1024,
+            "fullSize": true,
+            "alt": "Impressionist painting of a boy kicking an ant hill in a sunlit park, watched by an old man in a wheelchair.",
+            "caption": "Impressionist Park Moment with Ant Hill."
+          }
+        ]
+      },
+      {
+        "id": "crimson-paint",
+        "title": "Crimson Paint Reaching Woman",
+        "summary": "A woman reaches out of the dark, wrapped in a wave of crimson paint.",
+        "category": "Digital artwork",
+        "status": "2026",
+        "image": "assets/art/crimson-paint-reaching-woman.jpg",
+        "imageAlt": "A woman reaching towards the viewer, surrounded by splashes of crimson paint.",
+        "gallery": [
+          {
+            "src": "assets/art/crimson-paint-reaching-woman.jpg",
+            "width": 1536,
+            "height": 1024,
+            "fullSize": true,
+            "alt": "A woman reaching towards the viewer, surrounded by splashes of crimson paint on a dark background.",
+            "caption": "Crimson Paint Reaching Woman."
+          }
+        ]
+      },
+      {
+        "id": "melancholy-tv",
+        "title": "Melancholy TV in a Decaying Room",
+        "summary": "Silent figures in a decaying room, lit only by a glitching television and a sunset through the window.",
+        "category": "Digital artwork",
+        "status": "2026",
+        "image": "assets/art/melancholy-tv-in-a-decaying-room.jpg",
+        "imageAlt": "A dark, decaying living room with silent figures, a glitching television and a sunset in the window.",
+        "gallery": [
+          {
+            "src": "assets/art/melancholy-tv-in-a-decaying-room.jpg",
+            "width": 941,
+            "height": 1672,
+            "fullSize": true,
+            "alt": "A dark, decaying living room with silent figures, a glitching television and a sunset seen through the window, where a cat sits.",
+            "caption": "Melancholy TV in a Decaying Room."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "future",
-    "x": 738,
-    "y": 478,
+    "x": 760,
+    "y": 508,
     "color": [
       255,
       214,
