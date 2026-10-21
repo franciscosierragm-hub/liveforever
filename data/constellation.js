@@ -3,7 +3,7 @@ window.CONSTELLATION = [
   {
     "id": "contact",
     "x": 320,
-    "y": 238,
+    "y": 245,
     "color": [
       255,
       195,
@@ -96,8 +96,8 @@ window.CONSTELLATION = [
   },
   {
     "id": "about",
-    "x": 175,
-    "y": 78,
+    "x": 170,
+    "y": 75,
     "color": [
       224,
       231,
@@ -174,8 +174,8 @@ window.CONSTELLATION = [
   },
   {
     "id": "research",
-    "x": 462,
-    "y": 62,
+    "x": 470,
+    "y": 60,
     "color": [
       196,
       220,
@@ -578,8 +578,8 @@ window.CONSTELLATION = [
   },
   {
     "id": "university",
-    "x": 120,
-    "y": 345,
+    "x": 110,
+    "y": 350,
     "color": [
       214,
       225,
@@ -695,8 +695,8 @@ window.CONSTELLATION = [
   },
   {
     "id": "knowledge",
-    "x": 545,
-    "y": 238,
+    "x": 560,
+    "y": 250,
     "color": [
       255,
       192,
@@ -822,8 +822,8 @@ window.CONSTELLATION = [
   },
   {
     "id": "projects",
-    "x": 425,
-    "y": 418,
+    "x": 420,
+    "y": 430,
     "color": [
       255,
       205,
@@ -1648,14 +1648,14 @@ window.CONSTELLATION = [
   },
   {
     "id": "magazine",
-    "x": 560,
-    "y": 505,
+    "x": 570,
+    "y": 520,
     "color": [
       255,
       214,
       170
     ],
-    "size": 0.62,
+    "size": 0.9,
     "name": "Magazine",
     "subtitle": "Illustrated issue",
     "title": "Magazine",
@@ -1699,14 +1699,14 @@ window.CONSTELLATION = [
   },
   {
     "id": "art",
-    "x": 655,
-    "y": 380,
+    "x": 715,
+    "y": 345,
     "color": [
       255,
       170,
       170
     ],
-    "size": 0.62,
+    "size": 0.9,
     "name": "Art",
     "subtitle": "Digital artwork",
     "title": "Art",
@@ -1775,8 +1775,8 @@ window.CONSTELLATION = [
   },
   {
     "id": "future",
-    "x": 735,
-    "y": 488,
+    "x": 775,
+    "y": 468,
     "color": [
       255,
       214,

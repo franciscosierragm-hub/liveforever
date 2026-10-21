@@ -166,9 +166,6 @@
       const [x, y] = nodePosition(node), button = buttons.get(node.id);
       button.style.left = compact ? "" : x + "px"; button.style.top = compact ? "" : y + "px";
     });
-    const clusterLabel = container.querySelector(".cluster-label");
-    const [cx, cy] = project(690, 330);
-    clusterLabel.style.left = cx + "px"; clusterLabel.style.top = cy + "px";
     draw();
   }
   function curve(a, b, bend) {
@@ -214,7 +211,7 @@
   function drawGalaxy() {
     if (!galaxyNode) return;
     const [x, y] = nodePosition(galaxyNode);
-    const radius = 40 * Math.max(.7, Math.min(scale, 1.5)) * (hovered === galaxyNode.id ? 1.12 : 1);
+    const radius = 50 * Math.max(.7, Math.min(scale, 1.5)) * (hovered === galaxyNode.id ? 1.12 : 1);
     const spin = elapsed * .00004, tilt = -.42, flatten = .5;
     glow(ctx, x, y, radius * 1.9, [214, 190, 255], hovered === galaxyNode.id ? .9 : .6);
     ctx.save();
@@ -248,7 +245,7 @@
     glow(ctx, hx, hy, 120 * scale, [255, 195, 141], hovered === centerNode.id ? .9 : .6);
     ringNodes.concat(personalNodes.filter(node => node !== galaxyNode)).forEach(node => {
       const p = nodePosition(node);
-      const size = node.size * Math.max(.84, Math.min(scale, 1.7));
+      const size = 1.3 * node.size * Math.max(.84, Math.min(scale, 1.7));
       star(ctx, ...p, size, node.color, hovered === node.id ? 1.2 : 1);
     });
     // Small points travel along the spokes very slowly.

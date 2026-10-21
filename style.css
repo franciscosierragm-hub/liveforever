@@ -384,3 +384,15 @@ body.compact-home .featured { position: relative; left: auto; right: auto; botto
 body.compact-home .featured-cards { grid-template-columns: 1fr; }
 body.compact-home .featured-card:nth-child(n+3) { display: flex; }
 @media (min-width: 640px) { body.compact-home .featured-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* Home: names only, larger, and the personal side as visible as the rest. */
+.constellation .star-subtitle { display: none !important; }
+.constellation .star-name, .constellation .star-button.personal .star-name { font-size: calc(27px * var(--r, 1)); font-weight: 500; letter-spacing: .2px; color: #efece6; }
+.constellation .star-button[data-id="contact"] .star-name { font-size: calc(25px * var(--r, 1)); font-weight: 600; }
+.constellation .star-label { top: calc(30px * var(--r, 1)); left: calc(30px * var(--r, 1)); }
+.constellation .galaxy-button .star-label { top: calc(70px * var(--r, 1)); left: 50%; }
+.constellation .star-button[data-id="contact"] .star-label { top: calc(112px * var(--r, 1)); left: 50%; }
+.cluster-label { font-size: calc(13px * var(--r, 1)); color: #a7adb6; }
+.hero { top: 24vh; }
+body.compact-home .hero { top: auto; padding-bottom: 0; }
+body.compact-home .constellation .star-name { font-size: 20px; }
