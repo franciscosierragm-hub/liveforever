@@ -2,16 +2,16 @@
 window.CONSTELLATION = [
   {
     "id": "contact",
-    "x": 399,
-    "y": 261,
+    "x": 320,
+    "y": 238,
     "color": [
       255,
       195,
       141
     ],
     "size": 1.35,
-    "name": "Contact",
-    "subtitle": "About me · Get in touch",
+    "name": "About me",
+    "subtitle": "Profile · CV · Contact",
     "title": "Francisco Sierra González",
     "eyebrow": "Electrical, Electronics & Industrial AI Engineer",
     "description": "I connect physical systems with intelligent software. As a systems engineer and AI research associate, I work on aeronautical IoT, cognitive industrial machines and local AI interfaces. Interested in industrial AI, connected systems or a research collaboration? Get in touch.",
@@ -96,7 +96,7 @@ window.CONSTELLATION = [
   },
   {
     "id": "about",
-    "x": 223,
+    "x": 175,
     "y": 78,
     "color": [
       224,
@@ -105,7 +105,7 @@ window.CONSTELLATION = [
     ],
     "size": 0.92,
     "name": "Experience",
-    "subtitle": "A path through engineering",
+    "subtitle": "3 roles · CT Engineering, Univ. of Seville",
     "title": "Experience",
     "eyebrow": "Learning through real systems",
     "description": "From electrical and electronics engineering into industrial AI and aeronautical systems: real projects, real machines and the people who operate them.",
@@ -174,8 +174,8 @@ window.CONSTELLATION = [
   },
   {
     "id": "research",
-    "x": 584,
-    "y": 80,
+    "x": 462,
+    "y": 62,
     "color": [
       196,
       220,
@@ -183,7 +183,7 @@ window.CONSTELLATION = [
     ],
     "size": 0.85,
     "name": "Research",
-    "subtitle": "Intelligent industrial machines",
+    "subtitle": "Thesis & studies · Industry 5.0",
     "title": "Research",
     "eyebrow": "Objective: Industry 5.0 — resilience, ecology and humanisation",
     "description": "Research into intelligent industrial machines, cognitive industrial systems, the IoT and superintelligence-assisted manufacturing. Objective: Industry 5.0 — resilient, ecological and human-centred.",
@@ -578,8 +578,8 @@ window.CONSTELLATION = [
   },
   {
     "id": "university",
-    "x": 66,
-    "y": 254,
+    "x": 120,
+    "y": 345,
     "color": [
       214,
       225,
@@ -587,7 +587,7 @@ window.CONSTELLATION = [
     ],
     "size": 0.84,
     "name": "Education",
-    "subtitle": "Foundations and new directions",
+    "subtitle": "Double degree · AI & manufacturing",
     "title": "Education",
     "eyebrow": "A continuing learning process",
     "description": "A double degree in electrical and electronics engineering, complemented by training in artificial intelligence, manufacturing and aerospace systems.",
@@ -695,8 +695,8 @@ window.CONSTELLATION = [
   },
   {
     "id": "knowledge",
-    "x": 683,
-    "y": 289,
+    "x": 545,
+    "y": 238,
     "color": [
       255,
       192,
@@ -704,7 +704,7 @@ window.CONSTELLATION = [
     ],
     "size": 1.02,
     "name": "Toolkit",
-    "subtitle": "The tools behind the work",
+    "subtitle": "AI · IoT · PLC · simulation",
     "title": "Technical toolkit",
     "eyebrow": "Across software and hardware",
     "description": "The languages, platforms and engineering tools I use to connect ideas with physical systems.",
@@ -822,8 +822,8 @@ window.CONSTELLATION = [
   },
   {
     "id": "projects",
-    "x": 383,
-    "y": 503,
+    "x": 425,
+    "y": 418,
     "color": [
       255,
       205,
@@ -831,7 +831,7 @@ window.CONSTELLATION = [
     ],
     "size": 0.87,
     "name": "Projects",
-    "subtitle": "Ideas made tangible",
+    "subtitle": "10 projects · AI, IoT, aerospace",
     "title": "Projects & prototypes",
     "eyebrow": "From physical systems to intelligent tools",
     "description": "Industrial systems, local AI and interactive simulations: explore the work, its architecture and its current stage.",
@@ -1648,16 +1648,16 @@ window.CONSTELLATION = [
   },
   {
     "id": "magazine",
-    "x": 172,
-    "y": 448,
+    "x": 560,
+    "y": 505,
     "color": [
       255,
       214,
       170
     ],
-    "size": 0.86,
+    "size": 0.62,
     "name": "Magazine",
-    "subtitle": "Stories in print",
+    "subtitle": "Illustrated issue",
     "title": "Magazine",
     "eyebrow": "Issue 01 · Local AI",
     "description": "Local Knowledge, Real Impact: an illustrated seven-page feature on small, offline AI that works in local languages to bring agriculture, health and education knowledge to rural communities.",
@@ -1694,20 +1694,21 @@ window.CONSTELLATION = [
         }
       ]
     },
-    "items": []
+    "items": [],
+    "group": "personal"
   },
   {
     "id": "art",
-    "x": 585,
-    "y": 468,
+    "x": 655,
+    "y": 380,
     "color": [
       255,
       170,
       170
     ],
-    "size": 0.86,
+    "size": 0.62,
     "name": "Art",
-    "subtitle": "Images and ideas",
+    "subtitle": "Digital artwork",
     "title": "Art",
     "eyebrow": "Digital artwork",
     "description": "A personal series of digital images about memory, time and the people we leave behind.",
@@ -1769,12 +1770,13 @@ window.CONSTELLATION = [
           }
         ]
       }
-    ]
+    ],
+    "group": "personal"
   },
   {
     "id": "future",
-    "x": 760,
-    "y": 508,
+    "x": 735,
+    "y": 488,
     "color": [
       255,
       214,
@@ -1867,6 +1869,7 @@ window.CONSTELLATION = [
         }
       }
     ],
-    "kind": "galaxy"
+    "kind": "galaxy",
+    "group": "personal"
   }
 ];

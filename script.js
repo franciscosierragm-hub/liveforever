@@ -51,7 +51,8 @@
   };
   const centerNode = nodes.find(node => node.id === "contact");
   const galaxyNode = nodes.find(node => node.kind === "galaxy");
-  const ringNodes = nodes.filter(node => node !== centerNode && node !== galaxyNode)
+  const personalNodes = nodes.filter(node => node.group === "personal");
+  const ringNodes = nodes.filter(node => node !== centerNode && node.group !== "personal")
     .sort((a, b) => Math.atan2(a.y - centerNode.y, a.x - centerNode.x) - Math.atan2(b.y - centerNode.y, b.x - centerNode.x));
   // Spiral particles of the Future mini-galaxy, in unit coordinates.
   const galaxyStars = (() => {
@@ -66,17 +67,14 @@
         color: [Math.round(196 + 59 * warmth), Math.round(178 + 40 * warmth), Math.round(255 - 70 * warmth)] };
     });
   })();
-  const satellites = [[150,113],[355,82],[281,170],[398,154],[181,268],[247,270],[514,138],[500,155],[650,170],[523,232],[609,260],[652,401],[485,356],[531,426],[379,480],[259,402],[282,376],[149,420]];
+  const satellites = [[255,160],[395,140],[220,250],[400,320],[520,150],[500,320],[290,400],[150,205],[640,250],[470,520]];
+  let compact = false;
   function randomFactory(seed) {
     return () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
   }
   function project(x, y) { return [originX + x * scale, originY + y * scale]; }
   function nodePosition(node) {
-    if (width < 700) {
-      const p = mobilePositions[node.id];
-      const y = p[1] - (height < 720 && node === centerNode ? 40 : 0);
-      return [width * p[0] / 807, 90 + y / 571 * (height - 175)];
-    }
+    if (compact) return [width / 2, height / 2];
     return project(node.x, node.y);
   }
   function rgba(color, alpha) { return "rgba(" + color.join(",") + "," + alpha + ")"; }
@@ -151,16 +149,26 @@
     width = rect.width; height = rect.height;
     dpr = Math.min(devicePixelRatio || 1, 2);
     canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
-    scale = Math.min(width / 850, (height - 100) / 571);
-    originX = (width - 807 * scale) / 2;
-    originY = (height - 571 * scale) / 2;
+    compact = width < 1000;
+    document.body.classList.toggle("compact-home", compact);
+    // The constellation fills the area to the right of the introduction and above the featured work.
+    const heroBox = document.querySelector(".hero").getBoundingClientRect();
+    const featuredBox = document.querySelector(".featured").getBoundingClientRect();
+    const left = Math.max(width * .37, heroBox.right + 16), right = width - 24, top = 74;
+    const bottom = featuredBox.height ? featuredBox.top - 12 : height - 20;
+    scale = Math.max(.3, Math.min((right - left) / 860, (bottom - top) / 590));
+    originX = left + (right - left - 860 * scale) / 2;
+    originY = top + (bottom - top - 571 * scale) / 2;
     makeField();
-    // Labels grow and shrink with the constellation (reference: 1440 × 900).
-    container.style.setProperty("--r", width < 700 ? 1 : Math.max(.84, Math.min(scale / 1.4, 1.6)).toFixed(3));
+    // Labels grow and shrink with the constellation.
+    container.style.setProperty("--r", compact ? 1 : Math.max(.78, Math.min(scale / 1.05, 1.25)).toFixed(3));
     nodes.forEach(node => {
       const [x, y] = nodePosition(node), button = buttons.get(node.id);
-      button.style.left = x + "px"; button.style.top = y + "px";
+      button.style.left = compact ? "" : x + "px"; button.style.top = compact ? "" : y + "px";
     });
+    const clusterLabel = container.querySelector(".cluster-label");
+    const [cx, cy] = project(690, 330);
+    clusterLabel.style.left = cx + "px"; clusterLabel.style.top = cy + "px";
     draw();
   }
   function curve(a, b, bend) {
@@ -181,8 +189,15 @@
       ctx.beginPath(); ctx.moveTo(...a); ctx.bezierCurveTo(...c1, ...c2, ...b); ctx.stroke();
     });
     spokes().forEach(([a, c1, c2, b]) => { ctx.beginPath(); ctx.moveTo(...a); ctx.bezierCurveTo(...c1, ...c2, ...b); ctx.stroke(); });
-    const ringScale = width < 700 ? width / 807 : scale;
-    [51, 70, 90, 127, 186].forEach((radius, i) => {
+    ctx.setLineDash([2, 6]); ctx.strokeStyle = "rgba(193,184,169,.26)";
+    personalNodes.forEach((node, i) => {
+      if (!i) return;
+      const a = nodePosition(personalNodes[i - 1]), b = nodePosition(node);
+      ctx.beginPath(); ctx.moveTo(...a); ctx.lineTo(...b); ctx.stroke();
+    });
+    ctx.setLineDash([]);
+    const ringScale = scale;
+    [64, 82, 127, 186].forEach((radius, i) => {
       ctx.beginPath();
       ctx.setLineDash([.6, i < 3 ? 2.6 : 4.8]);
       ctx.strokeStyle = i < 3 ? "rgba(220,175,122,.35)" : "rgba(180,172,159,.22)";
@@ -199,7 +214,7 @@
   function drawGalaxy() {
     if (!galaxyNode) return;
     const [x, y] = nodePosition(galaxyNode);
-    const radius = (width < 700 ? 34 : 50 * Math.max(.85, Math.min(scale, 1.6))) * (hovered === galaxyNode.id ? 1.12 : 1);
+    const radius = 40 * Math.max(.7, Math.min(scale, 1.5)) * (hovered === galaxyNode.id ? 1.12 : 1);
     const spin = elapsed * .00004, tilt = -.42, flatten = .5;
     glow(ctx, x, y, radius * 1.9, [214, 190, 255], hovered === galaxyNode.id ? .9 : .6);
     ctx.save();
@@ -222,19 +237,22 @@
     ctx.drawImage(field, 0, 0, width, height);
     ctx.save();
     ctx.translate(pointer.x, pointer.y);
+    if (compact) { ctx.restore(); return; }
     drawPaths();
-    if (width >= 700) satellites.forEach(([x, y], i) => {
+    satellites.forEach(([x, y], i) => {
       const p = project(x, y);
       star(ctx, ...p, (i % 3 === 0 ? .44 : .29) * Math.max(.8, scale), i === 4 ? [217, 233, 255] : [255, 195, 141], .9);
     });
     drawGalaxy();
-    ringNodes.concat(centerNode).forEach(node => {
+    const [hx, hy] = nodePosition(centerNode);
+    glow(ctx, hx, hy, 120 * scale, [255, 195, 141], hovered === centerNode.id ? .9 : .6);
+    ringNodes.concat(personalNodes.filter(node => node !== galaxyNode)).forEach(node => {
       const p = nodePosition(node);
       const size = node.size * Math.max(.84, Math.min(scale, 1.7));
       star(ctx, ...p, size, node.color, hovered === node.id ? 1.2 : 1);
     });
     // Small points travel along the spokes very slowly.
-    if (width >= 700) spokes().forEach((p, i) => {
+    spokes().forEach((p, i) => {
       const t = (elapsed * .000018 + i * .19) % 1, u = 1 - t;
       const x = u*u*u*p[0][0] + 3*u*u*t*p[1][0] + 3*u*t*t*p[2][0] + t*t*t*p[3][0];
       const y = u*u*u*p[0][1] + 3*u*u*t*p[1][1] + 3*u*t*t*p[2][1] + t*t*t*p[3][1];
@@ -268,7 +286,7 @@
   }
   function setHover(id) {
     hovered = id;
-    document.querySelector("#destination-preview").textContent = id ? previewText(nodes.find(node=>node.id===id)) : "Choose a star to explore ↗";
+    document.querySelector("#destination-preview").textContent = id ? previewText(nodes.find(node=>node.id===id)) : "Or explore the constellation →";
     if (paused) draw();
   }
   function refreshLabels() {
@@ -701,13 +719,30 @@
     const button = document.createElement("button");
     button.className = node.kind === "galaxy" ? "star-button galaxy-button" : "star-button"; button.dataset.id = node.id;
     button.style.setProperty("--star-color", rgba(node.color, 1));
-    button.innerHTML = '<span class="star-label"><span class="star-name"></span><span class="star-subtitle"></span></span>';
+    if (node.group === "personal") button.classList.add("personal");
+    button.innerHTML = (node === centerNode ? '<span class="star-photo"><img src="assets/francisco-sierra.jpg" alt="" width="900" height="900" decoding="async"></span>' : '') + '<span class="star-label"><span class="star-name"></span><span class="star-subtitle"></span></span>';
     button.addEventListener("pointerenter", () => setHover(node.id));
     button.addEventListener("pointerleave", () => { if(document.activeElement!==button)setHover(null); });
     button.addEventListener("focus", () => setHover(node.id));
     button.addEventListener("blur", () => setHover(null));
     button.addEventListener("click", () => navigateTo(node, { direct: false }));
     container.append(button); buttons.set(node.id, button);
+  });
+  // Featured work: the strongest case studies, one click from the home page.
+  [["projects", "ht2000-ia"], ["projects", "f18-cockpit"], ["projects", "fal-ia"], ["research", "intelligent-industrial-machines"]].forEach(([nodeId, itemId]) => {
+    const node = nodes.find(entry => entry.id === nodeId);
+    const index = node ? node.items.findIndex(item => item.id === itemId) : -1;
+    if (index < 0) return;
+    const item = node.items[index];
+    const card = document.createElement("a"); card.className = "featured-card"; card.href = routeHash(node, index);
+    const thumb = document.createElement("span"); thumb.className = "featured-thumb";
+    const img = document.createElement("img"); img.src = item.image; img.alt = ""; img.loading = "lazy"; thumb.append(img);
+    if ((item.gallery || []).some(entry => entry.video)) { const play = document.createElement("span"); play.className = "featured-play"; play.textContent = "▶"; thumb.append(play); }
+    const text = document.createElement("span"); text.className = "featured-text";
+    const title = document.createElement("strong"); title.textContent = item.title;
+    const meta = document.createElement("span"); meta.textContent = (item.gallery || []).some(entry => entry.video) ? "Video case study" : nodeId === "research" ? "Thesis · PDF" : item.category || "";
+    text.append(title, meta); card.append(thumb, text);
+    document.querySelector("#featured-cards").append(card);
   });
   function toggleMotion() { paused=!paused; if(paused && cancelJourney)finishJourney(); syncAnimation(); }
   motionButton.addEventListener("click", toggleMotion);
