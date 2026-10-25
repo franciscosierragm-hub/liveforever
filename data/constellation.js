@@ -1870,8 +1870,8 @@ window.CONSTELLATION = [
   },
   {
     "id": "magazine",
-    "x": 570,
-    "y": 520,
+    "x": 640,
+    "y": 470,
     "color": [
       255,
       214,
@@ -1998,12 +1998,13 @@ window.CONSTELLATION = [
         ]
       }
     ],
-    "group": "personal"
+    "group": "personal",
+    "hidden": true
   },
   {
     "id": "future",
-    "x": 775,
-    "y": 468,
+    "x": 760,
+    "y": 330,
     "color": [
       255,
       214,

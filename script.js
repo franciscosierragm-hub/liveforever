@@ -1,7 +1,8 @@
 "use strict";
 
 (() => {
-  const nodes = window.CONSTELLATION;
+  // Sections marked "hidden" stay in the data but are not shown.
+  const nodes = window.CONSTELLATION.filter(node => !node.hidden);
   const canvas = document.querySelector("#sky");
   const ctx = canvas.getContext("2d");
   const field = document.createElement("canvas");
